@@ -30,7 +30,23 @@ UPDATE_FREQUENCY=60
 
 ### 3. Premiers pas
 
-#### Option A: API (recommandé pour la production)
+#### Option A: Interface de Chat (recommandé pour les débutants)
+
+Lancez l'interface graphique:
+
+```bash
+# Linux/Mac
+./run_chat.sh
+
+# Windows
+run_chat.bat
+```
+
+L'application s'ouvrira dans votre navigateur. Configurez votre clé API dans la barre latérale et commencez à poser des questions!
+
+Voir [CHAT_UI.md](CHAT_UI.md) pour plus de détails.
+
+#### Option B: API (recommandé pour la production)
 
 Démarrez le serveur:
 
@@ -46,7 +62,7 @@ curl -X POST http://localhost:8000/ask \
   -d '{"question": "De quoi parle ce site?"}'
 ```
 
-#### Option B: CLI (recommandé pour les tests)
+#### Option C: CLI (recommandé pour les tests)
 
 Mode interactif:
 
@@ -60,7 +76,7 @@ Question unique:
 python cli.py ask "Quel est le contenu principal?"
 ```
 
-#### Option C: Client Python
+#### Option D: Client Python
 
 ```bash
 python example_client.py

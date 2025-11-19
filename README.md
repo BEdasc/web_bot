@@ -61,7 +61,34 @@ UPDATE_FREQUENCY=60
 
 ## Utilisation
 
-### Démarrage de l'application
+### 🎨 Interface Graphique de Chat (Recommandé pour les débutants)
+
+L'application dispose d'une interface graphique moderne et intuitive !
+
+**Démarrage rapide:**
+
+```bash
+# Linux/Mac
+./run_chat.sh
+
+# Windows
+run_chat.bat
+```
+
+L'interface de chat s'ouvrira automatiquement dans votre navigateur sur `http://localhost:8501`
+
+**Fonctionnalités:**
+- 💬 Chat interactif avec historique
+- 📚 Affichage des sources avec extraits
+- 🎯 Indicateurs de confiance colorés
+- ⚙️ Configuration en temps réel
+- 🔄 Mise à jour manuelle du contenu
+
+**Documentation complète:** Voir [CHAT_UI.md](CHAT_UI.md)
+
+### 🔧 API REST (Pour les développeurs)
+
+**Démarrage de l'API:**
 
 ```bash
 python main.py

@@ -46,10 +46,10 @@ echo Installation de ChromaDB (peut prendre quelques minutes)...
 python -c "import chromadb" 2>nul
 if errorlevel 1 (
     echo    Telechargement de ChromaDB avec wheels pre-compilees...
-    pip install --only-binary=:all: chromadb==0.5.3 --quiet
+    pip install --only-binary=:all: chromadb==0.5.20 --quiet
     if errorlevel 1 (
         echo [WARN] Installation avec wheels echouee, tentative normale...
-        pip install chromadb==0.5.3
+        pip install chromadb==0.5.20
     )
     echo [OK] ChromaDB installe
 ) else (

@@ -6,10 +6,10 @@
 
 **Symptôme:** Erreur de compilation lors de `pip install -r requirements.txt`
 
-**Solution:** Nous avons mis à jour ChromaDB vers la version 0.5.3 qui inclut des wheels pré-compilées.
+**Solution:** Nous avons mis à jour ChromaDB vers la version 0.5.20 qui inclut des wheels pré-compilées pour Python 3.12.
 
 ```bash
-pip install chromadb==0.5.3
+pip install chromadb==0.5.20
 ```
 
 ### Erreur: SHA256 hash mismatch pour ONNX model
@@ -38,7 +38,7 @@ cd web_bot
 pip install -r requirements.txt
 
 # Si erreur avec ChromaDB, utiliser:
-pip install chromadb==0.5.3
+pip install chromadb==0.5.20
 pip install -r requirements.txt
 ```
 
@@ -46,7 +46,7 @@ pip install -r requirements.txt
 
 ```bash
 # Installer ChromaDB d'abord
-pip install chromadb==0.5.3
+pip install chromadb==0.5.20
 
 # Installer les autres dépendances principales
 pip install beautifulsoup4==4.12.3
@@ -164,7 +164,7 @@ Si vous rencontrez des conflits avec OpenTelemetry ou d'autres paquets:
 
 ```bash
 # Forcer la réinstallation
-pip install --force-reinstall --no-cache-dir chromadb==0.5.3
+pip install --force-reinstall --no-cache-dir chromadb==0.5.20
 ```
 
 ### Permissions

@@ -4,9 +4,28 @@
 echo "🔍 Vérification de votre installation..."
 echo ""
 
+# Détecter et utiliser l'environnement virtuel si disponible
+if [ -d "venv" ]; then
+    if [ -z "$VIRTUAL_ENV" ]; then
+        echo "📦 Environnement virtuel détecté, activation..."
+        source venv/bin/activate
+        echo "✅ Environnement virtuel activé"
+        echo ""
+    else
+        echo "✅ Déjà dans l'environnement virtuel"
+        echo ""
+    fi
+    PYTHON_CMD="python"
+else
+    echo "⚠️  Aucun environnement virtuel trouvé (venv/)"
+    echo "   Utilisation de python3 système"
+    echo ""
+    PYTHON_CMD="python3"
+fi
+
 # Vérifier ChromaDB
-if python3 -c "import chromadb; print(f'ChromaDB version: {chromadb.__version__}')" 2>/dev/null; then
-    CHROMA_VERSION=$(python3 -c "import chromadb; print(chromadb.__version__)")
+if $PYTHON_CMD -c "import chromadb; print(f'ChromaDB version: {chromadb.__version__}')" 2>/dev/null; then
+    CHROMA_VERSION=$($PYTHON_CMD -c "import chromadb; print(chromadb.__version__)")
     if [ "$CHROMA_VERSION" = "0.5.3" ]; then
         echo "✅ ChromaDB 0.5.3 (version correcte)"
     else
@@ -29,7 +48,7 @@ for module in "anthropic" "streamlit" "fastapi" "beautifulsoup4:bs4" "requests" 
         IMPORT_NAME=$MODULE_NAME
     fi
     
-    if python3 -c "import ${IMPORT_NAME}" 2>/dev/null; then
+    if $PYTHON_CMD -c "import ${IMPORT_NAME}" 2>/dev/null; then
         echo "✅ $MODULE_NAME"
     else
         echo "❌ $MODULE_NAME manquant"

@@ -4,11 +4,29 @@
 
 ### 1. Cloner et installer
 
+**Linux/Mac (recommandé):**
 ```bash
 git clone <your-repo>
 cd web_bot
-python -m venv venv
+./install.sh
+```
+
+**Windows:**
+```bash
+git clone <your-repo>
+cd web_bot
+install.bat
+```
+
+Le script d'installation gère tout automatiquement, y compris ChromaDB.
+
+**Alternative manuelle:**
+```bash
+git clone <your-repo>
+cd web_bot
+python3 -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
+pip install --only-binary=:all: chromadb==0.5.3  # Important: ChromaDB d'abord!
 pip install -r requirements.txt
 ```
 

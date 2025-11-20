@@ -23,41 +23,75 @@ Une application IA capable de lire le contenu d'un site web et de répondre à d
 
 ## Installation
 
-### Prérequis
+### ⚡ Installation Rapide (Recommandé)
 
-- Python 3.8+
-- Clé API Anthropic
+**Linux/Mac:**
+```bash
+git clone <your-repo-url>
+cd web_bot
+./install.sh
+```
 
-### Étapes d'installation
+**Windows:**
+```bash
+git clone <your-repo-url>
+cd web_bot
+install.bat
+```
 
-1. Cloner le dépôt :
+Le script d'installation va:
+- ✅ Créer l'environnement virtuel
+- ✅ Installer ChromaDB avec wheels pré-compilées (évite les erreurs de compilation)
+- ✅ Installer toutes les dépendances
+- ✅ Vérifier que tout fonctionne
+
+### 📋 Installation Manuelle
+
+Si vous préférez installer manuellement:
+
+1. **Cloner le dépôt:**
 ```bash
 git clone <your-repo-url>
 cd web_bot
 ```
 
-2. Créer un environnement virtuel :
+2. **Créer un environnement virtuel:**
 ```bash
-python -m venv venv
-source venv/bin/activate  # Sur Windows: venv\Scripts\activate
+python3 -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
 ```
 
-3. Installer les dépendances :
+3. **Installer ChromaDB d'abord** (important!):
+```bash
+pip install --only-binary=:all: chromadb==0.5.3
+```
+
+4. **Installer les autres dépendances:**
 ```bash
 pip install -r requirements.txt
 ```
 
-4. Configurer l'environnement :
+> ⚠️ **Note:** ChromaDB doit être installé séparément avec `--only-binary` pour éviter les erreurs de compilation C++.
+
+5. **Configurer l'environnement:**
 ```bash
 cp .env.example .env
+nano .env  # Éditez avec vos paramètres
 ```
 
-5. Éditer le fichier `.env` avec vos paramètres :
+Contenu minimum du `.env`:
 ```env
-ANTHROPIC_API_KEY=votre_clé_api_ici
-TARGET_URL=https://example.com
+ANTHROPIC_API_KEY=sk-ant-votre_clé_ici
+TARGET_URL=https://docs.anthropic.com
 UPDATE_FREQUENCY=60
 ```
+
+### 🔧 En cas de problèmes
+
+Consultez [INSTALLATION.md](INSTALLATION.md) pour:
+- Solutions aux erreurs courantes
+- Installation sur différents systèmes
+- Troubleshooting détaillé
 
 ## Utilisation
 

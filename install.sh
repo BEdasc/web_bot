@@ -51,10 +51,10 @@ if python -c "import chromadb" 2>/dev/null; then
     echo -e "${GREEN}✓${NC} ChromaDB déjà installé"
 else
     echo "   Téléchargement de ChromaDB avec wheels pré-compilées..."
-    # Forcer l'utilisation de wheels binaires
-    pip install --only-binary=:all: chromadb==0.5.3 --quiet || {
+    # Forcer l'utilisation de wheels binaires - version 0.5.20 pour Python 3.12+
+    pip install --only-binary=:all: chromadb==0.5.20 --quiet || {
         echo -e "${YELLOW}⚠${NC}  Installation avec wheels échouée, tentative normale..."
-        pip install chromadb==0.5.3
+        pip install chromadb==0.5.20
     }
     echo -e "${GREEN}✓${NC} ChromaDB installé"
 fi

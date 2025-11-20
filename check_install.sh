@@ -26,11 +26,14 @@ fi
 # Vérifier ChromaDB
 if $PYTHON_CMD -c "import chromadb; print(f'ChromaDB version: {chromadb.__version__}')" 2>/dev/null; then
     CHROMA_VERSION=$($PYTHON_CMD -c "import chromadb; print(chromadb.__version__)")
-    if [ "$CHROMA_VERSION" = "0.5.3" ]; then
-        echo "✅ ChromaDB 0.5.3 (version correcte)"
+    if [ "$CHROMA_VERSION" = "0.5.20" ]; then
+        echo "✅ ChromaDB 0.5.20 (version correcte)"
+    elif [ "$CHROMA_VERSION" = "0.5.3" ]; then
+        echo "⚠️  ChromaDB $CHROMA_VERSION (version 0.5.20 recommandée pour Python 3.12)"
+        echo "   Exécutez: pip install --only-binary=:all: chromadb==0.5.20"
     else
-        echo "⚠️  ChromaDB $CHROMA_VERSION (version 0.5.3 recommandée)"
-        echo "   Exécutez: pip install --only-binary=:all: chromadb==0.5.3"
+        echo "⚠️  ChromaDB $CHROMA_VERSION (version 0.5.20 recommandée)"
+        echo "   Exécutez: pip install --only-binary=:all: chromadb==0.5.20"
     fi
 else
     echo "❌ ChromaDB non installé"

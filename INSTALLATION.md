@@ -23,6 +23,23 @@ rm -rf ./chroma_db
 
 Le répertoire sera recréé automatiquement avec la nouvelle API.
 
+### Erreur: `Client.__init__() got an unexpected keyword argument 'proxies'`
+
+**Symptôme:** Erreur lors du lancement du chat: `Client.__init__() got an unexpected keyword argument 'proxies'`
+
+**Cause:** Caches obsolètes contenant des références à d'anciennes versions des bibliothèques.
+
+**Solution rapide:**
+```bash
+# Linux/Mac
+./clean_caches.sh
+
+# Windows
+clean_caches.bat
+```
+
+Puis relancez l'application.
+
 ### Erreur: `Failed building wheel for chroma-hnswlib`
 
 **Symptôme:** Erreur de compilation lors de `pip install -r requirements.txt`

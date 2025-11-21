@@ -1,6 +1,27 @@
 # Guide d'Installation Détaillé
 
+## ⚠️ Migration ChromaDB 0.5.20
+
+**Si vous mettez à jour depuis une version antérieure**, consultez [MIGRATION_0.5.md](MIGRATION_0.5.md) pour les changements importants.
+
 ## Problèmes Courants et Solutions
+
+### Erreur: `Could not connect to tenant default_tenant`
+
+**Symptôme:** Erreur lors du lancement du chat ou de l'API: `Could not connect to tenant default_tenant. Are you sure it exists?`
+
+**Cause:** Cette erreur se produit après une mise à jour vers ChromaDB 0.5.20. L'ancienne base de données n'est pas compatible.
+
+**Solution:**
+```bash
+# Supprimez l'ancien répertoire ChromaDB
+rm -rf ./chroma_db
+
+# Redémarrez l'application
+./run_chat.sh
+```
+
+Le répertoire sera recréé automatiquement avec la nouvelle API.
 
 ### Erreur: `Failed building wheel for chroma-hnswlib`
 

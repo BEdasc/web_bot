@@ -1,8 +1,8 @@
 """Vector database module for storing and retrieving website content."""
 import chromadb
-from chromadb.config import Settings as ChromaSettings
 from typing import List, Dict, Optional
 import logging
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -17,10 +17,14 @@ class VectorStore:
             persist_directory: Directory to persist the ChromaDB database
         """
         self.persist_directory = persist_directory
-        self.client = chromadb.Client(ChromaSettings(
-            persist_directory=persist_directory,
-            anonymized_telemetry=False
-        ))
+
+        # Create directory if it doesn't exist
+        os.makedirs(persist_directory, exist_ok=True)
+
+        # Use PersistentClient for ChromaDB 0.5.x
+        self.client = chromadb.PersistentClient(
+            path=persist_directory
+        )
         self.collection_name = "website_content"
         self.collection = None
         self._initialize_collection()

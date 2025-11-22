@@ -41,10 +41,27 @@ else
     exit 1
 fi
 
+# Vérifier Anthropic
+if $PYTHON_CMD -c "import anthropic; print(f'Anthropic version: {anthropic.__version__}')" 2>/dev/null; then
+    ANTHROPIC_VERSION=$($PYTHON_CMD -c "import anthropic; print(anthropic.__version__)")
+    if [ "$ANTHROPIC_VERSION" = "0.40.0" ]; then
+        echo "✅ Anthropic 0.40.0 (version correcte)"
+    elif [ "$ANTHROPIC_VERSION" = "0.39.0" ]; then
+        echo "⚠️  Anthropic $ANTHROPIC_VERSION (version 0.40.0 recommandée)"
+        echo "   Exécutez: pip install anthropic==0.40.0"
+    else
+        echo "✅ Anthropic $ANTHROPIC_VERSION"
+    fi
+else
+    echo "❌ Anthropic non installé"
+    echo "   Exécutez: ./install.sh"
+    exit 1
+fi
+
 # Vérifier les autres modules
 MISSING=0
 
-for module in "anthropic" "streamlit" "fastapi" "beautifulsoup4:bs4" "requests" "pydantic"; do
+for module in "streamlit" "fastapi" "beautifulsoup4:bs4" "requests" "pydantic"; do
     MODULE_NAME=$(echo $module | cut -d: -f1)
     IMPORT_NAME=$(echo $module | cut -d: -f2)
     if [ "$IMPORT_NAME" = "$MODULE_NAME" ]; then

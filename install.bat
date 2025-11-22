@@ -61,7 +61,7 @@ echo.
 echo Installation des autres dependances...
 pip install beautifulsoup4==4.12.3 --quiet
 pip install requests==2.31.0 --quiet
-pip install anthropic==0.39.0 --quiet
+pip install anthropic==0.40.0 --quiet
 pip install fastapi==0.109.0 --quiet
 pip install uvicorn==0.27.0 --quiet
 pip install pydantic==2.5.3 --quiet

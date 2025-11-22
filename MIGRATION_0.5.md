@@ -1,8 +1,10 @@
-# Migration vers ChromaDB 0.5.20
+# Migration vers ChromaDB 0.5.20 et Anthropic 0.40.0
 
 ## Changements Importants
 
-Nous avons mis à jour ChromaDB de la version 0.5.3 vers 0.5.20 pour assurer une meilleure compatibilité avec Python 3.12.
+Nous avons mis à jour les bibliothèques principales pour assurer une meilleure compatibilité avec Python 3.12 :
+- **ChromaDB** : 0.5.3 → 0.5.20
+- **Anthropic** : 0.39.0 → 0.40.0
 
 ### Changements d'API
 
@@ -69,6 +71,40 @@ rm -rf ~/.cache/chroma/onnx_models
 ```
 
 Puis relancez l'application. Le modèle sera retéléchargé automatiquement.
+
+### Erreur 3: "Client.__init__() got an unexpected keyword argument 'proxies'"
+
+**Symptôme:**
+```
+Erreur d'initialisation: Client.__init__() got an unexpected keyword argument 'proxies'
+```
+
+**Cause:** Cette erreur se produit quand des caches obsolètes (Streamlit, Python, ChromaDB) contiennent des références à d'anciennes versions des bibliothèques.
+
+**Solution:** Utilisez le script de nettoyage complet :
+
+```bash
+# Linux/Mac
+./clean_caches.sh
+
+# Windows
+clean_caches.bat
+```
+
+Ou manuellement :
+```bash
+# Nettoyer tous les caches
+rm -rf ./chroma_db
+rm -rf ~/.cache/chroma
+rm -rf ~/.streamlit/cache
+find . -type d -name "__pycache__" -exec rm -rf {} +
+
+# Réinstaller les dépendances
+pip install -r requirements.txt --upgrade
+
+# Redémarrer l'application
+./run_chat.sh
+```
 
 ## Test de Votre Installation
 

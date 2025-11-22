@@ -62,7 +62,7 @@ async def startup_event():
 
     try:
         # Initialize components
-        scraper = WebScraper(settings.target_url)
+        scraper = WebScraper(settings.target_url, verify_ssl=settings.verify_ssl)
         vector_store = VectorStore(settings.chroma_persist_directory)
         qa_engine = QAEngine(settings.anthropic_api_key, vector_store)
         updater = ContentUpdater(scraper, vector_store, settings.update_frequency)

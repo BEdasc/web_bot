@@ -51,7 +51,7 @@ Examples:
 def initialize_components():
     """Initialize all system components."""
     print("Initialisation du système...")
-    scraper = WebScraper(settings.target_url)
+    scraper = WebScraper(settings.target_url, verify_ssl=settings.verify_ssl)
     vector_store = VectorStore(settings.chroma_persist_directory)
     qa_engine = QAEngine(settings.anthropic_api_key, vector_store)
     return scraper, vector_store, qa_engine

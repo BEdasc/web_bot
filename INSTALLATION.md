@@ -63,6 +63,26 @@ rm -rf ~/.cache/chroma/
 
 2. **Ignorer (recommandé):** Le modèle se téléchargera correctement lors de la première utilisation réelle.
 
+### Erreur: `SSL: CERTIFICATE_VERIFY_FAILED`
+
+**Symptôme:**
+```
+SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate'))
+```
+
+**Cause:** Le site web cible utilise un certificat SSL auto-signé ou non reconnu par le système.
+
+**⚠️ Solution (SEULEMENT pour les sites de confiance) :**
+
+Ajoutez cette ligne dans votre fichier `.env` :
+```bash
+VERIFY_SSL=false
+```
+
+**AVERTISSEMENT:** Désactiver la vérification SSL est un risque de sécurité. Ne faites ceci que pour des sites internes ou de confiance absolue.
+
+**Alternative sécurisée:** Installez le certificat racine du site sur votre système ou contactez l'administrateur du site.
+
 ### Installation Complète
 
 #### Option 1: Installation Automatique

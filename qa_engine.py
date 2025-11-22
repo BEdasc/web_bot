@@ -18,7 +18,7 @@ class QAEngine:
         """
         self.client = anthropic.Anthropic(api_key=api_key)
         self.vector_store = vector_store
-        self.model = "claude-3-5-sonnet-20241022"
+        self.model = "claude-sonnet-4-5-20250929"  # Claude Sonnet 4.5 (latest)
 
     def _create_context_from_sources(self, sources: List[Dict[str, any]]) -> str:
         """Create a context string from retrieved sources.

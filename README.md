@@ -8,9 +8,10 @@ Une application IA capable de lire le contenu d'un site web et de répondre à d
 
 - **Scraping web intelligent** : Extraction automatique du contenu textuel des sites web
 - **Recherche sémantique** : Base de données vectorielle (ChromaDB) pour une recherche efficace
-- **Questions-Réponses IA** : Utilise Claude (Anthropic) pour répondre aux questions
+- **Questions-Réponses IA** : Utilise Claude Sonnet 4.5 (dernier modèle Anthropic) pour répondre aux questions
 - **Mise à jour automatique** : Détection des changements et rafraîchissement automatique du contenu
 - **Anti-hallucination** : Protections robustes contre l'invention de contenu
+- **Interface chat graphique** : Interface Streamlit intuitive avec préconfiguration via .env
 
 ### Protections anti-hallucination
 
@@ -63,7 +64,7 @@ source venv/bin/activate  # Windows: venv\Scripts\activate
 
 3. **Installer ChromaDB d'abord** (important!):
 ```bash
-pip install --only-binary=:all: chromadb==0.5.3
+pip install --only-binary=:all: chromadb==0.5.20
 ```
 
 4. **Installer les autres dépendances:**
@@ -83,8 +84,11 @@ Contenu minimum du `.env`:
 ```env
 ANTHROPIC_API_KEY=sk-ant-votre_clé_ici
 TARGET_URL=https://docs.anthropic.com
+VERIFY_SSL=true
 UPDATE_FREQUENCY=60
 ```
+
+> 💡 **Astuce**: Si vous utilisez l'interface de chat, la configuration dans `.env` sera automatiquement chargée !
 
 ### 🔧 En cas de problèmes
 
@@ -115,8 +119,9 @@ L'interface de chat s'ouvrira automatiquement dans votre navigateur sur `http://
 - 💬 Chat interactif avec historique
 - 📚 Affichage des sources avec extraits
 - 🎯 Indicateurs de confiance colorés
-- ⚙️ Configuration en temps réel
+- ⚙️ Préconfiguration automatique depuis `.env`
 - 🔄 Mise à jour manuelle du contenu
+- 🤖 Utilise Claude Sonnet 4.5 (dernier modèle)
 
 **Documentation complète:** Voir [CHAT_UI.md](CHAT_UI.md)
 

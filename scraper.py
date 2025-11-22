@@ -1,6 +1,7 @@
 """Web scraping module for extracting content from websites."""
 import hashlib
 import requests
+import urllib3
 from bs4 import BeautifulSoup
 from typing import List, Dict, Optional
 import logging
@@ -12,14 +13,25 @@ logger = logging.getLogger(__name__)
 class WebScraper:
     """Scrapes and extracts content from web pages."""
 
-    def __init__(self, url: str):
+    def __init__(self, url: str, verify_ssl: bool = True):
         """Initialize the scraper with a target URL.
 
         Args:
             url: The URL of the website to scrape
+            verify_ssl: Whether to verify SSL certificates (default: True)
+                       Set to False for sites with self-signed or problematic certificates
         """
         self.url = url
+        self.verify_ssl = verify_ssl
         self.last_content_hash: Optional[str] = None
+
+        # Disable SSL warnings if verification is disabled
+        if not verify_ssl:
+            urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+            logger.warning(
+                f"SSL certificate verification is DISABLED for {url}. "
+                "This is insecure and should only be used for trusted sources."
+            )
 
     def fetch_content(self) -> Optional[str]:
         """Fetch the HTML content from the target URL.
@@ -31,11 +43,21 @@ class WebScraper:
             headers = {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
             }
-            response = requests.get(self.url, headers=headers, timeout=30)
+            response = requests.get(
+                self.url,
+                headers=headers,
+                timeout=30,
+                verify=self.verify_ssl
+            )
             response.raise_for_status()
             return response.text
         except requests.RequestException as e:
             logger.error(f"Failed to fetch content from {self.url}: {e}")
+            if self.verify_ssl:
+                logger.info(
+                    "If this is an SSL certificate error, you can disable SSL verification "
+                    "by setting VERIFY_SSL=false in your .env file (not recommended for production)"
+                )
             return None
 
     def extract_text_chunks(self, html: str, chunk_size: int = 1000) -> List[Dict[str, str]]:

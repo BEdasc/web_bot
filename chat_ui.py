@@ -136,10 +136,11 @@ def initialize_system():
                 anthropic_api_key=st.session_state.get('api_key', os.getenv('ANTHROPIC_API_KEY', '')),
                 target_url=st.session_state.get('target_url', 'https://docs.anthropic.com'),
                 update_frequency=st.session_state.get('update_frequency', 60),
-                chroma_persist_directory='./chroma_db'
+                chroma_persist_directory='./chroma_db',
+                verify_ssl=st.session_state.get('verify_ssl', os.getenv('VERIFY_SSL', 'true').lower() == 'true')
             )
 
-        scraper = WebScraper(settings.target_url)
+        scraper = WebScraper(settings.target_url, verify_ssl=settings.verify_ssl)
         vector_store = VectorStore(settings.chroma_persist_directory)
         qa_engine = QAEngine(settings.anthropic_api_key, vector_store)
         updater = ContentUpdater(scraper, vector_store, settings.update_frequency)

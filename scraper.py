@@ -5,6 +5,7 @@ import urllib3
 from bs4 import BeautifulSoup
 from typing import List, Dict, Optional
 import logging
+from crawler import WebCrawler
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -13,16 +14,37 @@ logger = logging.getLogger(__name__)
 class WebScraper:
     """Scrapes and extracts content from web pages."""
 
-    def __init__(self, url: str, verify_ssl: bool = True):
+    def __init__(
+        self,
+        url: str,
+        verify_ssl: bool = True,
+        crawl_mode: str = "single",
+        max_pages: int = 100,
+        max_depth: int = 3,
+        crawl_delay: float = 1.0,
+        same_domain_only: bool = True,
+        exclude_patterns: str = ""
+    ):
         """Initialize the scraper with a target URL.
 
         Args:
             url: The URL of the website to scrape
             verify_ssl: Whether to verify SSL certificates (default: True)
-                       Set to False for sites with self-signed or problematic certificates
+            crawl_mode: 'single' for single page, 'full' for full site crawl
+            max_pages: Maximum pages to crawl in full mode
+            max_depth: Maximum depth for crawler
+            crawl_delay: Delay between requests in seconds
+            same_domain_only: Only crawl same domain links
+            exclude_patterns: Comma-separated patterns to exclude
         """
         self.url = url
         self.verify_ssl = verify_ssl
+        self.crawl_mode = crawl_mode
+        self.max_pages = max_pages
+        self.max_depth = max_depth
+        self.crawl_delay = crawl_delay
+        self.same_domain_only = same_domain_only
+        self.exclude_patterns = [p.strip() for p in exclude_patterns.split(',') if p.strip()]
         self.last_content_hash: Optional[str] = None
 
         # Disable SSL warnings if verification is disabled
@@ -32,6 +54,8 @@ class WebScraper:
                 f"SSL certificate verification is DISABLED for {url}. "
                 "This is insecure and should only be used for trusted sources."
             )
+
+        logger.info(f"WebScraper initialized in '{crawl_mode}' mode for {url}")
 
     def fetch_content(self) -> Optional[str]:
         """Fetch the HTML content from the target URL.
@@ -162,6 +186,17 @@ class WebScraper:
         Returns:
             List of text chunks with metadata, or None if scraping failed
         """
+        if self.crawl_mode == "full":
+            return self.scrape_full_site()
+        else:
+            return self.scrape_single_page()
+
+    def scrape_single_page(self) -> Optional[List[Dict[str, str]]]:
+        """Scrape a single page.
+
+        Returns:
+            List of text chunks with metadata, or None if scraping failed
+        """
         html = self.fetch_content()
         if not html:
             return None
@@ -173,3 +208,56 @@ class WebScraper:
 
         chunks = self.extract_text_chunks(html)
         return chunks
+
+    def scrape_full_site(self) -> Optional[List[Dict[str, str]]]:
+        """Crawl and scrape the full website.
+
+        Returns:
+            List of text chunks from all crawled pages
+        """
+        logger.info(f"Starting full site crawl of {self.url}")
+
+        # Initialize crawler
+        crawler = WebCrawler(
+            start_url=self.url,
+            max_pages=self.max_pages,
+            max_depth=self.max_depth,
+            crawl_delay=self.crawl_delay,
+            same_domain_only=self.same_domain_only,
+            exclude_patterns=self.exclude_patterns,
+            verify_ssl=self.verify_ssl
+        )
+
+        # Crawl the site
+        crawled_pages = crawler.crawl()
+
+        if not crawled_pages:
+            logger.error("No pages were crawled")
+            return None
+
+        # Extract chunks from all pages
+        all_chunks = []
+        chunk_id_counter = 0
+
+        for page in crawled_pages:
+            url = page['url']
+            html = page['html']
+
+            # Extract chunks from this page
+            page_chunks = self.extract_text_chunks(html, chunk_size=1000)
+
+            # Update chunk IDs and source URL
+            for chunk in page_chunks:
+                chunk['id'] = f"chunk_{chunk_id_counter}"
+                chunk['source'] = url  # Override with actual page URL
+                chunk_id_counter += 1
+
+            all_chunks.extend(page_chunks)
+
+        logger.info(f"Full site scrape complete: {len(crawled_pages)} pages, {len(all_chunks)} chunks")
+
+        # Get crawler stats
+        stats = crawler.get_stats()
+        logger.info(f"Crawler stats: {stats}")
+
+        return all_chunks

@@ -177,28 +177,61 @@ def render_sidebar(scraper, vector_store, updater, settings):
     with st.sidebar:
         st.markdown("### ⚙️ Configuration")
 
-        # API Key input
-        api_key = st.text_input(
-            "Clé API Anthropic",
-            value=st.session_state.api_key,
-            type="password",
-            help="Votre clé API Anthropic pour utiliser Claude"
-        )
-        if api_key != st.session_state.api_key:
-            st.session_state.api_key = api_key
-            st.cache_resource.clear()
+        # Check if .env file exists and has required parameters
+        env_configured = Path(".env").exists() and settings is not None
 
-        # Target URL input
-        target_url = st.text_input(
-            "URL cible",
-            value=st.session_state.target_url,
-            help="L'URL du site web à analyser"
-        )
-        if target_url != st.session_state.target_url:
-            st.session_state.target_url = target_url
-            st.cache_resource.clear()
+        if env_configured:
+            # Configuration from .env file - show as read-only info
+            st.info("✅ Configuration chargée depuis `.env`")
 
-        # Show sources toggle
+            # Show key info (masked)
+            if settings.anthropic_api_key and settings.anthropic_api_key != "your_api_key_here":
+                masked_key = settings.anthropic_api_key[:8] + "..." + settings.anthropic_api_key[-4:]
+                st.text_input(
+                    "Clé API Anthropic",
+                    value=masked_key,
+                    disabled=True,
+                    help="Configurée dans .env"
+                )
+            else:
+                st.warning("⚠️ Clé API manquante dans .env")
+
+            # Show URL (editable if needed)
+            st.text_input(
+                "URL cible",
+                value=settings.target_url,
+                disabled=True,
+                help="Configurée dans .env - Modifiez le fichier .env pour changer"
+            )
+
+            st.caption("💡 Pour modifier: éditez le fichier `.env`")
+
+        else:
+            # No .env - manual configuration
+            st.warning("⚠️ Fichier `.env` non trouvé - Configuration manuelle")
+
+            # API Key input
+            api_key = st.text_input(
+                "Clé API Anthropic",
+                value=st.session_state.api_key,
+                type="password",
+                help="Votre clé API Anthropic pour utiliser Claude"
+            )
+            if api_key != st.session_state.api_key:
+                st.session_state.api_key = api_key
+                st.cache_resource.clear()
+
+            # Target URL input
+            target_url = st.text_input(
+                "URL cible",
+                value=st.session_state.target_url,
+                help="L'URL du site web à analyser"
+            )
+            if target_url != st.session_state.target_url:
+                st.session_state.target_url = target_url
+                st.cache_resource.clear()
+
+        # Show sources toggle (always editable)
         st.session_state.show_sources = st.checkbox(
             "Afficher les sources",
             value=st.session_state.show_sources,
@@ -259,9 +292,10 @@ def render_sidebar(scraper, vector_store, updater, settings):
         st.markdown("### ℹ️ À propos")
         st.markdown("""
         **AI Web Reader** utilise:
-        - Claude AI pour les réponses
-        - RAG pour éviter les hallucinations
-        - Citations de sources obligatoires
+        - 🤖 Claude Sonnet 4.5 (dernier modèle)
+        - 🔍 RAG pour éviter les hallucinations
+        - 📚 Citations de sources obligatoires
+        - 🔒 Réponses basées uniquement sur le contenu indexé
 
         Toutes les réponses sont basées **uniquement** sur le contenu du site web indexé.
         """)

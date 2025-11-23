@@ -14,6 +14,14 @@ class Settings(BaseSettings):
     api_port: int = Field(8000, env="API_PORT")
     verify_ssl: bool = Field(True, env="VERIFY_SSL")
 
+    # Crawler settings
+    crawl_mode: str = Field("single", env="CRAWL_MODE")  # 'single' or 'full'
+    max_pages: int = Field(100, env="MAX_PAGES")
+    max_depth: int = Field(3, env="MAX_DEPTH")
+    crawl_delay: float = Field(1.0, env="CRAWL_DELAY")
+    same_domain_only: bool = Field(True, env="SAME_DOMAIN_ONLY")
+    exclude_patterns: str = Field(".pdf,.jpg,.png,.gif,/admin,/login", env="EXCLUDE_PATTERNS")
+
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"

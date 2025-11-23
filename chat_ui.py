@@ -140,7 +140,16 @@ def initialize_system():
                 verify_ssl=st.session_state.get('verify_ssl', os.getenv('VERIFY_SSL', 'true').lower() == 'true')
             )
 
-        scraper = WebScraper(settings.target_url, verify_ssl=settings.verify_ssl)
+        scraper = WebScraper(
+            settings.target_url,
+            verify_ssl=settings.verify_ssl,
+            crawl_mode=settings.crawl_mode,
+            max_pages=settings.max_pages,
+            max_depth=settings.max_depth,
+            crawl_delay=settings.crawl_delay,
+            same_domain_only=settings.same_domain_only,
+            exclude_patterns=settings.exclude_patterns
+        )
         vector_store = VectorStore(settings.chroma_persist_directory)
         qa_engine = QAEngine(settings.anthropic_api_key, vector_store)
         updater = ContentUpdater(scraper, vector_store, settings.update_frequency)

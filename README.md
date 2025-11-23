@@ -7,6 +7,7 @@ Une application IA capable de lire le contenu d'un site web et de répondre à d
 ### Fonctionnalités principales
 
 - **Scraping web intelligent** : Extraction automatique du contenu textuel des sites web
+- **Crawler web complet** : Mode single-page OU crawling récursif de tout un site web
 - **Recherche sémantique** : Base de données vectorielle (ChromaDB) pour une recherche efficace
 - **Questions-Réponses IA** : Utilise Claude Sonnet 4.5 (dernier modèle Anthropic) pour répondre aux questions
 - **Mise à jour automatique** : Détection des changements et rafraîchissement automatique du contenu
@@ -89,6 +90,18 @@ UPDATE_FREQUENCY=60
 ```
 
 > 💡 **Astuce**: Si vous utilisez l'interface de chat, la configuration dans `.env` sera automatiquement chargée !
+
+### 🕷️ Mode Crawler (Nouveau !)
+
+Par défaut, l'application scrape **une seule page**. Pour crawler **tout un site web** :
+
+```env
+CRAWL_MODE=full        # Active le crawling complet
+MAX_PAGES=100          # Nombre max de pages
+MAX_DEPTH=3            # Profondeur de liens
+```
+
+📖 **Documentation complète :** Voir [CRAWLER.md](CRAWLER.md)
 
 ### 🔧 En cas de problèmes
 

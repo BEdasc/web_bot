@@ -194,7 +194,8 @@ def render_sidebar(scraper, vector_store, updater, settings):
                     help="Configurée dans .env"
                 )
             else:
-                st.warning("⚠️ Clé API manquante dans .env")
+                st.error("⚠️ Clé API invalide dans .env")
+                st.caption("Éditez `.env` et remplacez `your_api_key_here` par votre vraie clé Anthropic")
 
             # Show URL (editable if needed)
             st.text_input(
@@ -364,6 +365,16 @@ def main():
     # Initialize system components
     scraper, vector_store, qa_engine, updater, settings = initialize_system()
 
+    # Sync session state with loaded settings (especially when .env exists)
+    if settings:
+        # Update session state with actual loaded values
+        if settings.anthropic_api_key and settings.anthropic_api_key != "your_api_key_here":
+            st.session_state.api_key = settings.anthropic_api_key
+        if settings.target_url:
+            st.session_state.target_url = settings.target_url
+        if settings.update_frequency:
+            st.session_state.update_frequency = settings.update_frequency
+
     # Render header
     st.markdown("""
     <div class="chat-header">
@@ -386,8 +397,10 @@ def main():
 
     # Chat input
     if prompt := st.chat_input("Posez votre question ici..."):
-        if not st.session_state.api_key:
-            st.error("⚠️ Veuillez configurer votre clé API Anthropic dans la barre latérale")
+        # Validate API key
+        if not st.session_state.api_key or st.session_state.api_key == "your_api_key_here":
+            st.error("⚠️ Veuillez configurer une clé API Anthropic valide dans votre fichier .env")
+            st.info("💡 Éditez le fichier .env et remplacez 'your_api_key_here' par votre vraie clé API Anthropic")
             return
 
         if not qa_engine:

@@ -106,8 +106,9 @@ class WebScraper:
         # Extract main text content
         text_elements = []
 
-        # Get all paragraph, heading, and list item texts
-        for element in soup.find_all(['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'li', 'article', 'section']):
+        # Get all paragraph, heading, list item, and structural texts
+        # Added: div, span, address, td, th to capture contact info and table data
+        for element in soup.find_all(['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'li', 'article', 'section', 'div', 'span', 'address', 'td', 'th']):
             text = element.get_text(strip=True)
             if text and len(text) > 20:  # Filter out very short snippets
                 text_elements.append({

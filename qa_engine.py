@@ -58,18 +58,18 @@ class QAEngine:
 CRITICAL ANTI-HALLUCINATION RULES:
 1. ONLY use information from the provided sources below
 2. If the answer is not in the sources, say "I don't have enough information to answer this question based on the website content."
-3. ALWAYS cite which source number you're using (e.g., "According to Source 1...")
+3. Provide direct answers WITHOUT mentioning source numbers in your response (sources will be displayed separately)
 4. Do NOT add information from your general knowledge
 5. Do NOT make assumptions or inferences beyond what's explicitly stated
 6. If you're uncertain, express that uncertainty
-7. Quote directly from sources when possible
+7. Answer naturally as if the information comes from the website itself
 
 WEBSITE CONTENT:
 {context}
 
 USER QUESTION: {question}
 
-Please provide an answer based ONLY on the sources above. Include citations to source numbers."""
+Please provide a direct answer based ONLY on the sources above. Do NOT include phrases like "According to Source X" or "Source Y indicates" - just answer the question naturally."""
 
     def answer_question(
         self,

@@ -7,7 +7,7 @@ from pathlib import Path
 # Must be the first Streamlit command
 st.set_page_config(
     page_title="AI Web Reader Chat",
-    page_icon="🤖",
+    page_icon="💬",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -100,12 +100,13 @@ def load_css():
 
     /* Header styling */
     .chat-header {
-        background: linear-gradient(90deg, #2196F3 0%, #4CAF50 100%);
+        background: linear-gradient(135deg, #1976D2 0%, #2196F3 50%, #42A5F5 100%);
         color: white;
         padding: 1.5rem;
         border-radius: 10px;
         margin-bottom: 1rem;
         text-align: center;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
 
     /* Sidebar styling */
@@ -192,19 +193,6 @@ def render_sidebar(scraper, vector_store, updater, settings):
         if env_configured:
             # Configuration from .env file - show as read-only info
             st.info("✅ Configuration chargée depuis `.env`")
-
-            # Show key info (masked)
-            if settings.anthropic_api_key and settings.anthropic_api_key != "your_api_key_here":
-                masked_key = settings.anthropic_api_key[:8] + "..." + settings.anthropic_api_key[-4:]
-                st.text_input(
-                    "Clé API Anthropic",
-                    value=masked_key,
-                    disabled=True,
-                    help="Configurée dans .env"
-                )
-            else:
-                st.error("⚠️ Clé API invalide dans .env")
-                st.caption("Éditez `.env` et remplacez `your_api_key_here` par votre vraie clé Anthropic")
 
             # Show URL (editable if needed)
             st.text_input(
@@ -302,9 +290,9 @@ def render_sidebar(scraper, vector_store, updater, settings):
         st.markdown("### ℹ️ À propos")
         st.markdown("""
         **AI Web Reader** utilise:
-        - 🤖 Claude Sonnet 4.5 (dernier modèle)
+        - 🧠 Claude Sonnet 4.5 (dernier modèle)
         - 🔍 RAG pour éviter les hallucinations
-        - 📚 Citations de sources obligatoires
+        - 📚 Sources automatiquement référencées
         - 🔒 Réponses basées uniquement sur le contenu indexé
 
         Toutes les réponses sont basées **uniquement** sur le contenu du site web indexé.
@@ -341,7 +329,7 @@ def render_message(message):
 
         st.markdown(f"""
         <div class="assistant-message">
-            <strong>🤖 Assistant</strong>
+            <strong>💬 Assistant</strong>
             <span class="{confidence_class}">Confiance: {confidence_text}</span>
             <span class="timestamp">{timestamp}</span>
             <p>{content}</p>
@@ -387,7 +375,7 @@ def main():
     # Render header
     st.markdown("""
     <div class="chat-header">
-        <h1>🤖 AI Web Reader Chat</h1>
+        <h1>AI Web Reader Chat</h1>
         <p>Posez des questions sur le contenu du site web indexé</p>
     </div>
     """, unsafe_allow_html=True)
